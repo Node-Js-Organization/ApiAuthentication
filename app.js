@@ -1,3 +1,6 @@
+//require env
+require('dotenv').config();
+
 //import packages
 const express = require('express'),
       morgan = require('morgan'),
@@ -17,5 +20,4 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/users', userRoutes);
 
 //start the server
-const port = 3000;
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.listen(process.env.PORT, () => console.log(`Server started on port ${process.env.PORT}`));

@@ -1,5 +1,4 @@
-const express = require('express'),
-      router = express.Router();
+const router = require('express-promise-router')();
 
 //helpers
 const {validateBody, schemas} = require('../helpers/routeHelpers');
