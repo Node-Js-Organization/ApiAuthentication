@@ -1,6 +1,15 @@
 const JWT = require('jsonwebtoken'),
       db = require('../models');
 
+const signToken = (user) => {
+    return JWT.sign({
+        iss: 'AdamMorsi',
+        sub: user._id,
+        iat: new Date().getTime(),
+        exp: new Date().setDate(new Date().getDate() + 1),
+    }, process.env.ACCESS_TOKEN_SECRET);
+};
+
 class UserController {
     static async signup(req, res, next) {
         const { value: { body: { email, password } } } = req;
@@ -17,12 +26,7 @@ class UserController {
         await newUser.save();
 
         //create token
-        const token = JWT.sign({
-            iss: 'AdamMorsi',
-            sub: newUser._id,
-            iat: new Date().getTime(),
-            exp: new Date().setDate(new Date().getDate() + 1),
-        }, process.env.ACCESS_TOKEN_SECRET);
+        const token = signToken(newUser);
 
         //respond with token
         res.status(200).json({token});
@@ -34,7 +38,7 @@ class UserController {
     }
 
     static secret(req, res, next) {
-        console.log('secret called');
+        res.json({secret: 'resource'});
     }
 }
 
