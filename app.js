@@ -16,7 +16,10 @@ const app = express();
 //Middlewares
 app.use(cors());
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: true }));
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
 //Routes
 app.use('/users', userRoutes);
