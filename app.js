@@ -3,8 +3,9 @@ require('dotenv').config();
 
 //import packages
 const express = require('express'),
-      morgan = require('morgan'),
-      bodyParser = require('body-parser');
+  morgan = require('morgan'),
+  bodyParser = require('body-parser'),
+  cors = require('cors');
 
 //import routes
 const userRoutes = require('./routes/users');
@@ -13,11 +14,14 @@ const userRoutes = require('./routes/users');
 const app = express();
 
 //Middlewares
+app.use(cors());
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Routes
 app.use('/users', userRoutes);
 
 //start the server
-app.listen(process.env.PORT, () => console.log(`Server started on port ${process.env.PORT}`));
+app.listen(process.env.PORT, () =>
+  console.log(`Server started on port ${process.env.PORT}`)
+);
