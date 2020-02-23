@@ -22,9 +22,9 @@ class UserController {
     } = req;
 
     //check if there is a user with the same email
-    const foundUser = await db.User.findOne({ email });
+    const oldUser = await db.User.findOne({ email });
 
-    if (foundUser) {
+    if (oldUser) {
       return res.status(403).json({ error: 'Email is already in use' });
     }
 
