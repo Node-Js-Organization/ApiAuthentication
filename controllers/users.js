@@ -22,7 +22,7 @@ class UserController {
     } = req;
 
     //check if there is a user with the same email
-    const oldUser = await db.User.findOne({ 'local.email':email });
+    const oldUser = await db.User.findOne({ 'local.email': email });
 
     if (oldUser) {
       return res.status(403).json({ error: 'Email is already in use' });
@@ -32,7 +32,8 @@ class UserController {
     const newUser = new db.User({
       method: 'local',
       local: {
-        email, password
+        email,
+        password
       }
     });
     await newUser.save();
@@ -52,6 +53,13 @@ class UserController {
   }
 
   static googleOAuth(req, res) {
+    const { user } = req;
+    // Generate token
+    const token = signToken(user);
+    res.status(200).json({ token });
+  }
+
+  static facebookOAuth(req, res) {
     const { user } = req;
     // Generate token
     const token = signToken(user);

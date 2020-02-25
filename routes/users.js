@@ -25,11 +25,13 @@ router
     UsersController.signin
   );
 
-router.route('/oauth/google')
-  .post(
-    authenticate('googleToken'),
-    UsersController.googleOAuth
-  );
+router
+  .route('/oauth/google')
+  .post(authenticate('googleToken'), UsersController.googleOAuth);
+
+router
+  .route('/oauth/facebook')
+  .post(authenticate('facebookToken'), UsersController.facebookOAuth);
 
 router.route('/secret').get(authenticate('jwt'), UsersController.secret);
 
