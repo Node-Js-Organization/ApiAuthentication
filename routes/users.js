@@ -25,6 +25,12 @@ router
     UsersController.signin
   );
 
+router.route('/oauth/google')
+  .post(
+    authenticate('googleToken'),
+    UsersController.googleOAuth
+  );
+
 router.route('/secret').get(authenticate('jwt'), UsersController.secret);
 
 module.exports = router;

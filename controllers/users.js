@@ -14,7 +14,7 @@ const signToken = (user) => {
 };
 
 class UserController {
-  static async signup(req, res, next) {
+  static async signup(req, res) {
     const {
       value: {
         body: { email, password }
@@ -22,14 +22,19 @@ class UserController {
     } = req;
 
     //check if there is a user with the same email
-    const oldUser = await db.User.findOne({ email });
+    const oldUser = await db.User.findOne({ 'local.email':email });
 
     if (oldUser) {
       return res.status(403).json({ error: 'Email is already in use' });
     }
 
     //create a new user
-    const newUser = new db.User({ email, password });
+    const newUser = new db.User({
+      method: 'local',
+      local: {
+        email, password
+      }
+    });
     await newUser.save();
 
     //create token
@@ -39,14 +44,21 @@ class UserController {
     res.status(200).json({ token });
   }
 
-  static signin(req, res, next) {
+  static signin(req, res) {
     const { user } = req;
     // Generate token
     const token = signToken(user);
     res.status(200).json({ token });
   }
 
-  static secret(req, res, next) {
+  static googleOAuth(req, res) {
+    const { user } = req;
+    // Generate token
+    const token = signToken(user);
+    res.status(200).json({ token });
+  }
+
+  static secret(req, res) {
     res.json({ secret: 'resource' });
   }
 }
