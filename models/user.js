@@ -2,47 +2,47 @@ const mongoose = require('mongoose'),
   bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-    method: {
-        type: String,
-        enum: ['local', 'google', 'facebook'],
-        required: true
+  method: {
+    type: String,
+    enum: ['local', 'google', 'facebook'],
+    required: true
+  },
+  local: {
+    email: {
+      type: String,
+      lowercase: true
     },
-    local: {
-        email: {
-            type: String,
-            lowercase: true
-        },
-        password: {
-            type: String
-        }
-    },
-    google: {
-        id: {
-            type: String
-        },
-        email: {
-            type: String,
-            lowercase: true
-        }
-    },
-    facebook: {
-        id: {
-            type: String
-        },
-        email: {
-            type: String,
-            lowercase: true
-        }
+    password: {
+      type: String
     }
+  },
+  google: {
+    id: {
+      type: String
+    },
+    email: {
+      type: String,
+      lowercase: true
+    }
+  },
+  facebook: {
+    id: {
+      type: String
+    },
+    email: {
+      type: String,
+      lowercase: true
+    }
+  }
 });
 
 //run the following function before the save action
 userSchema.pre('save', async function(next) {
   try {
-     //if the method is not local ignore this method
-     if(this.method !== 'local') {
-         next();
-     }
+    //if the method is not local ignore this method
+    if (this.method !== 'local') {
+      next();
+    }
     //generate a salt
     const salt = await bcrypt.genSalt(10);
 
